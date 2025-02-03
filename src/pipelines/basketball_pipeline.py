@@ -23,6 +23,7 @@ categories: list[
 
 
 def fetch_and_save_basketball_data():
+    """Fetch and save U Sports baskeball data in csv files"""
     log.info("Fetching basketball team and player stats...")
 
     data_path = Path("data/basketball")
@@ -47,6 +48,7 @@ def fetch_and_save_basketball_data():
 
 
 def update_basketball_db(session: Session):
+    """Update U Sports basketball data in db"""
     log.info("Updating basketball database from CSV files...")
 
     for category in categories:

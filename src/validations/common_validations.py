@@ -1,9 +1,11 @@
 import pandas as pd
+
 from src.utils.constants import VALID_SCHOOLS
 from src.utils.logger import log
 
 
 def validate_school_column(df: pd.DataFrame, school_column: str = "school"):
+    """Validate U Sports school names"""
     invalid = df[~df[school_column].isin(VALID_SCHOOLS)]
 
     if not invalid.empty:
@@ -12,6 +14,7 @@ def validate_school_column(df: pd.DataFrame, school_column: str = "school"):
 
 
 def validate_columns(df: pd.DataFrame, expected_cols: list[str], df_name: str):
+    """Validate column names"""
     actual = set(df.columns)
     expected = set(expected_cols)
     missing = expected - actual

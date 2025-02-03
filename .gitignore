@@ -17,3 +17,6 @@ data/
 *.db
 
 *.sqlite
+
+
+*.log
