@@ -3,8 +3,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.db import Base
 from src.utils.constants import (
+    BASKETBALL_MEN_PLAYERS_PLAYOFFS,
     BASKETBALL_MEN_PLAYERS_REG,
     BASKETBALL_MEN_TEAM_REG,
+    BASKETBALL_WOMEN_PLAYERS_PLAYOFFS,
     BASKETBALL_WOMEN_PLAYERS_REG,
     BASKETBALL_WOMEN_TEAM_REG,
 )
@@ -124,3 +126,13 @@ class WomenPlayer(BasePlayer):
     __tablename__ = BASKETBALL_WOMEN_PLAYERS_REG
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
     team: Mapped["WomenTeam"] = relationship("WomenTeam", back_populates="players")
+
+
+class MenPlayerPlayoffs(BasePlayer):
+    __tablename__ = BASKETBALL_MEN_PLAYERS_PLAYOFFS
+    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_REG}.id"))
+
+
+class WomenPlayerPlayoffs(BasePlayer):
+    __tablename__ = BASKETBALL_WOMEN_PLAYERS_PLAYOFFS
+    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
