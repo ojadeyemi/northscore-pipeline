@@ -32,6 +32,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           LOG_LEVEL: DEBUG
+          PYTHONPATH: "./"
         run: |
           poetry run python scripts/fetch_all_data.py  # Run first script
           poetry run python scripts/update_all_db.py   # Run second script after first completes
