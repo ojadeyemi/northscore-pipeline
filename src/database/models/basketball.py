@@ -118,8 +118,6 @@ class BasePlayoffTeam(Base):
     field_goal_attempted_against: Mapped[int] = mapped_column(Integer)
     three_pointers_made_against: Mapped[int] = mapped_column(Integer)
     three_pointers_attempted_against: Mapped[int] = mapped_column(Integer)
-    total_points: Mapped[int] = mapped_column(Integer)
-    total_points_against: Mapped[int] = mapped_column(Integer)
 
     def __repr__(self):
         return f"<ChampionshipTeam(id={self.id}, team_name='{self.team_name}', conference='{self.conference}')>"
