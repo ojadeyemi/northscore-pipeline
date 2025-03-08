@@ -3,6 +3,7 @@ from src.pipelines.basketball_pipeline import update_basketball_db
 
 
 def init_db():
+    """Initialize database"""
     Base.metadata.create_all(bind=engine)
 
 
@@ -12,8 +13,12 @@ if __name__ == "__main__":
     session = SessionLocal()
 
     try:
+        # filter_categories=[("m", "regular"), ("w", "regular")]
         update_basketball_db(session)
+    except TypeError as e:
+        print("\nTypeError: ", e)
+        raise
     except Exception as e:
-        print(f"[91mFailed to update database: {e}[0m")
+        print(f"\nFAILED TO UPDATE DATABASE!!!: {e}")
     finally:
         session.close()
