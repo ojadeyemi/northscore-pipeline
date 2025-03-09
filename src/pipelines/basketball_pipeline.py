@@ -93,7 +93,20 @@ def update_basketball_db(session: Session, filter_categories=None):
             cat for cat in categories if (cat["league"], cat["season_option"]) in filter_categories
         ]
 
-    for category in categories_to_process:
+    ordered_categories = []
+    for league in ["m", "w"]:  # type: ignore
+        ordered_categories.extend(
+            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "championship"]
+        )
+        ordered_categories.extend(
+            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "playoffs"]
+        )
+        ordered_categories.extend(
+            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "regular"]
+        )
+
+    # Process in this specific order
+    for category in ordered_categories:
         league: LeagueType = category["league"]  # type:ignore
         season_option: SeasonOptionType = category["season_option"]  # type: ignore
         team_model: type[BaseTeam] | type[BasePlayoffTeam] = category["team_model"]  # type: ignore

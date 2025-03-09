@@ -172,6 +172,18 @@ class WomenTeam(BaseTeam):
     )
 
 
+class MenPlayer(BasePlayer):
+    __tablename__ = BASKETBALL_MEN_PLAYERS_REG
+    team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_REG}.id"))
+    team: Mapped["MenTeam"] = relationship("MenTeam", back_populates="players")
+
+
+class WomenPlayer(BasePlayer):
+    __tablename__ = BASKETBALL_WOMEN_PLAYERS_REG
+    team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
+    team: Mapped["WomenTeam"] = relationship("WomenTeam", back_populates="players")
+
+
 class MenTeamPlayoffs(BasePlayoffTeam):
     __tablename__ = BASKETBALL_MEN_TEAM_PLAYOFFS
     players: Mapped[list["MenPlayerPlayoffs"]] = relationship(
@@ -200,18 +212,6 @@ class WomenChampionshipTeam(BasePlayoffTeam):
     )
 
 
-class MenPlayer(BasePlayer):
-    __tablename__ = BASKETBALL_MEN_PLAYERS_REG
-    team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_REG}.id"))
-    team: Mapped["MenTeam"] = relationship("MenTeam", back_populates="players")
-
-
-class WomenPlayer(BasePlayer):
-    __tablename__ = BASKETBALL_WOMEN_PLAYERS_REG
-    team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
-    team: Mapped["WomenTeam"] = relationship("WomenTeam", back_populates="players")
-
-
 class MenPlayerPlayoffs(BasePlayer):
     __tablename__ = BASKETBALL_MEN_PLAYERS_PLAYOFFS
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_PLAYOFFS}.id"))
@@ -230,9 +230,11 @@ class MenChampionshipPlayer(BasePlayer):
     __tablename__ = BASKETBALL_MEN_PLAYERS_CHAMPIONSHIP
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_CHAMPIONSHIP}.id"))
     team: Mapped["MenChampionshipTeam"] = relationship("MenChampionshipTeam", back_populates="players")
+    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_REG}.id"))
 
 
 class WomenChampionshipPlayer(BasePlayer):
     __tablename__ = BASKETBALL_WOMEN_PLAYERS_CHAMPIONSHIP
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_CHAMPIONSHIP}.id"))
     team: Mapped["WomenChampionshipTeam"] = relationship("WomenChampionshipTeam", back_populates="players")
+    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
