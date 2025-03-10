@@ -216,25 +216,21 @@ class MenPlayerPlayoffs(BasePlayer):
     __tablename__ = BASKETBALL_MEN_PLAYERS_PLAYOFFS
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_PLAYOFFS}.id"))
     team: Mapped["MenTeamPlayoffs"] = relationship("MenTeamPlayoffs", back_populates="players")
-    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_REG}.id"))
 
 
 class WomenPlayerPlayoffs(BasePlayer):
     __tablename__ = BASKETBALL_WOMEN_PLAYERS_PLAYOFFS
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_PLAYOFFS}.id"))
     team: Mapped["WomenTeamPlayoffs"] = relationship("WomenTeamPlayoffs", back_populates="players")
-    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
 
 
 class MenChampionshipPlayer(BasePlayer):
     __tablename__ = BASKETBALL_MEN_PLAYERS_CHAMPIONSHIP
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_CHAMPIONSHIP}.id"))
     team: Mapped["MenChampionshipTeam"] = relationship("MenChampionshipTeam", back_populates="players")
-    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_MEN_TEAM_REG}.id"))
 
 
 class WomenChampionshipPlayer(BasePlayer):
     __tablename__ = BASKETBALL_WOMEN_PLAYERS_CHAMPIONSHIP
     team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_CHAMPIONSHIP}.id"))
     team: Mapped["WomenChampionshipTeam"] = relationship("WomenChampionshipTeam", back_populates="players")
-    regular_team_id = mapped_column(Integer, ForeignKey(f"{BASKETBALL_WOMEN_TEAM_REG}.id"))
