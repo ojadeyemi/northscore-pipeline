@@ -105,7 +105,13 @@ def update_basketball_db(session: Session, filter_categories=None):
             [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "regular"]
         )
 
-    # Process in this specific order
+    # First, delete all players for all categories
+    with session.begin():
+        for category in ordered_categories:
+            player_model = category["player_model"]  # type: ignore
+            session.query(player_model).delete()
+
+    # Then, delete and recreate teams and players
     for category in ordered_categories:
         league: LeagueType = category["league"]  # type:ignore
         season_option: SeasonOptionType = category["season_option"]  # type: ignore
@@ -124,7 +130,7 @@ def update_basketball_db(session: Session, filter_categories=None):
 
         try:
             with session.begin():
-                session.query(player_model).delete()
+                # Players already deleted in previous step
                 session.query(team_model).delete()
 
                 teams = [team_model(**row.to_dict()) for _, row in team_df.iterrows()]
