@@ -134,7 +134,7 @@ def update_basketball_db(session: Session, filter_categories=None):
             with session.begin():
                 # Players already deleted in previous step
                 session.query(team_model).delete()
-                reset_sequence(session, player_model.__tablename__)
+                reset_sequence(session, team_model.__tablename__)
 
                 teams = [team_model(**row.to_dict()) for _, row in team_df.iterrows()]
                 session.bulk_save_objects(teams)
