@@ -23,6 +23,7 @@ from src.database.models.basketball import (
     WomenTeam,
     WomenTeamPlayoffs,
 )
+from src.utils.helpers import reset_sequence
 from src.utils.logger import log
 from src.validations.basketball_validations import validate_player_data, validate_team_data
 
@@ -110,6 +111,7 @@ def update_basketball_db(session: Session, filter_categories=None):
         for category in ordered_categories:
             player_model = category["player_model"]  # type: ignore
             session.query(player_model).delete()
+            reset_sequence(session, player_model.__tablename__)
 
     # Then, delete and recreate teams and players
     for category in ordered_categories:
@@ -132,6 +134,7 @@ def update_basketball_db(session: Session, filter_categories=None):
             with session.begin():
                 # Players already deleted in previous step
                 session.query(team_model).delete()
+                reset_sequence(session, player_model.__tablename__)
 
                 teams = [team_model(**row.to_dict()) for _, row in team_df.iterrows()]
                 session.bulk_save_objects(teams)
