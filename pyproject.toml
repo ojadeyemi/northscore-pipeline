@@ -17,7 +17,7 @@ package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
-pylint = "^3.3.4"
+pylint = "^3.3.5"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
