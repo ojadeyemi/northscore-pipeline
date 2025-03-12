@@ -23,6 +23,7 @@ from src.database.models.basketball import (
     WomenTeam,
     WomenTeamPlayoffs,
 )
+from src.utils.constants import CHAMPIONSHIP, PLAYOFFS, REGULAR
 from src.utils.helpers import reset_sequence
 from src.utils.logger import log
 from src.validations.basketball_validations import validate_player_data, validate_team_data
@@ -36,11 +37,11 @@ SeasonOptionType = Literal["regular", "playoffs", "championship"]
 categories: list[
     dict[str, LeagueType | SeasonOptionType | type[BaseTeam] | type[BasePlayoffTeam] | type[BasePlayer]]
 ] = [
-    {"league": "m", "season_option": "regular", "team_model": MenTeam, "player_model": MenPlayer},
-    {"league": "m", "season_option": "playoffs", "team_model": MenTeamPlayoffs, "player_model": MenPlayerPlayoffs},
+    {"league": "m", "season_option": REGULAR, "team_model": MenTeam, "player_model": MenPlayer},
+    {"league": "m", "season_option": PLAYOFFS, "team_model": MenTeamPlayoffs, "player_model": MenPlayerPlayoffs},
     {
         "league": "m",
-        "season_option": "championship",
+        "season_option": CHAMPIONSHIP,
         "team_model": MenChampionshipTeam,
         "player_model": MenChampionshipPlayer,
     },
@@ -97,28 +98,28 @@ def update_basketball_db(session: Session, filter_categories=None):
     ordered_categories = []
     for league in ["m", "w"]:  # type: ignore
         ordered_categories.extend(
-            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "championship"]
+            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == CHAMPIONSHIP]
         )
         ordered_categories.extend(
-            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "playoffs"]
+            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == PLAYOFFS]
         )
         ordered_categories.extend(
-            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == "regular"]
+            [cat for cat in categories_to_process if cat["league"] == league and cat["season_option"] == REGULAR]
         )
 
     # First, delete all players for all categories
     with session.begin():
         for category in ordered_categories:
-            player_model = category["player_model"]  # type: ignore
+            player_model = category["player_model"]
             session.query(player_model).delete()
             reset_sequence(session, player_model.__tablename__)
 
     # Then, delete and recreate teams and players
     for category in ordered_categories:
-        league: LeagueType = category["league"]  # type:ignore
-        season_option: SeasonOptionType = category["season_option"]  # type: ignore
-        team_model: type[BaseTeam] | type[BasePlayoffTeam] = category["team_model"]  # type: ignore
-        player_model: type[BasePlayer] = category["player_model"]  # type: ignore
+        league: LeagueType = category["league"]
+        season_option: SeasonOptionType = category["season_option"]
+        team_model: type[BaseTeam] | type[BasePlayoffTeam] = category["team_model"]
+        player_model: type[BasePlayer] = category["player_model"]
 
         csv_path = data_path / f"{league}_{season_option}_teams.csv"
         player_csv_path = data_path / f"{league}_{season_option}_players.csv"
@@ -148,7 +149,7 @@ def update_basketball_db(session: Session, filter_categories=None):
                         player_data = row.to_dict()
                         player_data["team_id"] = team_id
 
-                        if season_option == "playoffs" and "regular_team_id" in player_model.__table__.columns:
+                        if season_option == PLAYOFFS and "regular_team_id" in player_model.__table__.columns:
                             regular_team_model = MenTeam if league == "m" else WomenTeam
                             regular_team = (
                                 session.query(regular_team_model)

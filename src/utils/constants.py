@@ -1,3 +1,10 @@
+"""Contains import constant values needed for all leagues"""
+
+# Season options
+REGULAR = "regular"
+PLAYOFFS = "playoffs"
+CHAMPIONSHIP = "championship"
+
 VALID_SCHOOLS = [
     "Acadia",
     "Alberta",
@@ -21,6 +28,7 @@ VALID_SCHOOLS = [
     "McGill",
     "McMaster",
     "Memorial",
+    "Montreal",
     "Mount Royal",
     "Nipissing",
     "Ontario Tech",
@@ -29,6 +37,7 @@ VALID_SCHOOLS = [
     "Regina",
     "Saint Mary's",
     "Saskatchewan",
+    "Sherbooke",
     "StFX",
     "Thompson Rivers",
     "Toronto",

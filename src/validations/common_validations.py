@@ -4,7 +4,7 @@ from src.utils.constants import VALID_SCHOOLS
 from src.utils.logger import log
 
 
-def validate_school_column(df: pd.DataFrame, school_column: str = "school"):
+def validate_school_column(df: pd.DataFrame, school_column: str):
     """Validate U Sports school names"""
     invalid = df[~df[school_column].isin(VALID_SCHOOLS)]
 
