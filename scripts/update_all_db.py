@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     try:
         # filter_categories=[("m", "regular"), ("w", "regular")]
-        update_basketball_db(session)
+        update_basketball_db(session, filter_categories=[("m", "championship"), ("w", "championship")])
     except TypeError as e:
         print("\nTypeError: ", e)
         raise
