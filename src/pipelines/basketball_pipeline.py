@@ -4,7 +4,7 @@ from typing import Literal
 import pandas as pd
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from usports.basketball import usport_players_stats, usport_team_stats
+from usports.basketball import usports_bball_players, usports_bball_teams
 
 from src.database.models.basketball import (
     BasePlayer,
@@ -73,8 +73,8 @@ def fetch_and_save_basketball_data(filter_categories=None):
         league: LeagueType = category["league"]  # type:ignore
         season_option: SeasonOptionType = category["season_option"]  # type: ignore
 
-        team_df = usport_team_stats(league=league, season_option=season_option)
-        player_df = usport_players_stats(league=league, season_option=season_option)
+        team_df = usports_bball_teams(league=league, season_option=season_option)
+        player_df = usports_bball_players(league=league, season_option=season_option)
 
         validate_team_data(team_df, season_type=season_option)
         validate_player_data(player_df)
@@ -133,7 +133,6 @@ def update_basketball_db(session: Session, filter_categories=None):
 
         try:
             with session.begin():
-                # Players already deleted in previous step
                 session.query(team_model).delete()
                 reset_sequence(session, team_model.__tablename__)
 
