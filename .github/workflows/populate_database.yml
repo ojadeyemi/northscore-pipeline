@@ -55,8 +55,8 @@ jobs:
 
           echo "Found $NON_EMPTY_FILES non-empty CSV files"
 
-          if [ $NON_EMPTY_FILES -lt 2 ]; then
-            echo "Error: Expected at least 2 non-empty CSV files but found $NON_EMPTY_FILES"
+          if [ $NON_EMPTY_FILES -lt 4 ]; then
+            echo "Error: Expected at least 4 non-empty CSV files but found $NON_EMPTY_FILES"
             exit 1
           fi
 
@@ -67,7 +67,7 @@ jobs:
           name: sports-data
           path: data/
           overwrite: true
-          retention-days: 30
+          retention-days: 7
 
       - name: Update Database
         if: steps.fetch_data.outcome == 'success' && steps.validate_data.outcome == 'success'
