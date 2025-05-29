@@ -7,9 +7,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "usports @ git+https://github.com/ojadeyemi/usports.git",
-    "sqlalchemy (>=2.0.37,<3.0.0)",
+    "sqlalchemy (>=2.0.40,<3.0.0)",
     "pandas (>=2.2.3,<3.0.0)",
-    "psycopg[binary] (>=3.2.4,<4.0.0)",
+    "psycopg[binary] (>=3.2.8,<4.0.0)",
 ]
 
 [tool.poetry]
@@ -17,7 +17,7 @@ package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
-pylint = "^3.3.5"
+pylint = "^3.3.7"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
