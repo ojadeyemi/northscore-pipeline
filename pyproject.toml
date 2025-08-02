@@ -1,7 +1,7 @@
 [project]
-name = "usports-data-pipeline"
+name = "northscore-pipeline"
 version = "0.1.0"
-description = "A multi-sport data pipeline for U Sports data"
+description = "A multi-sport data pipeline for U Sports and CCAA current league data"
 authors = [{ name = "OJ Adeyemi", email = "ojieadeyemi@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.12"
