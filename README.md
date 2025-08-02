@@ -1,19 +1,19 @@
-# Canada Sports Usports Pipeline
+# NorthScore Pipeline
 
-A private data pipeline for automating the fetching, validation, and updating of Usports data into the database.
+Central ETL pipeline for NorthScore that automates the ingestion, transformation, and loading of U SPORTS and CCAA data from Canadian university and college sports — includes GitHub Actions workflows for scheduled script execution.
 
 ## ⚙️ Requirements
-
 - Python 3.12+
-- PostgreSQL (or compatible database)
+- PostgreSQL (or compatible)
+- Optional: Redis / Prefect (if using orchestration)
 
 ## 📦 Setup
 
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/ojadeyemi/canada-sports-usports-pipeline.git
-cd canada-sports-usports-pipeline
+git clone https://github.com/ojadeyemi/northscore-pipeline.git
+cd northscore-pipeline
 ```
 
 2. **Set Environment Variables:**
@@ -37,12 +37,4 @@ poetry install
 ```bash
 poetry run python scripts/fetch_all_data.py
 poetry run python scripts/update_all_db.py
-```
-
-## 🗓️ Cron Job Example
-
-```bash
-0 */6 * 9-12,1-4 * cd /path/to/project && poetry run python scripts/fetch_all_data.py >> logs/fetch.log 2>&1
-
-5 */6 * 9-12,1-4 * cd /path/to/project && poetry run python scripts/update_all_db.py >> logs/update.log 2>&1
 ```
