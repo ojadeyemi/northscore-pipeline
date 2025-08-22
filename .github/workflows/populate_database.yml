@@ -2,9 +2,8 @@ name: Populate Database
 
 on:
   schedule:
-    - cron: "0 2 * 10,11,12,1,2,3 *" # Daily at 2 AM from October to March
-  push:
-    branches: [main]
+    - cron: "0 3 * 11,12,1,2 *" # Daily at 2 AM from November to February
+
   workflow_dispatch: # Allows manual runs
 
 jobs:
@@ -30,49 +29,9 @@ jobs:
       - name: Install Dependencies
         run: poetry install --no-root --without dev
 
-      - name: Download Previous Data (if exists)
-        uses: actions/download-artifact@v4
-        with:
-          name: sports-data
-          path: data
-        continue-on-error: true
-
-      - name: Fetch Sports Data
-        id: fetch_data
+      - name: Run update script
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          LOG_LEVEL: DEBUG
+          LOG_LEVEL: INFO
           PYTHONPATH: "./"
-        run: poetry run python scripts/fetch_all_data.py
-
-      - name: Validate CSV Files
-        id: validate_data
-        if: steps.fetch_data.outcome == 'success'
-        run: |
-          CSV_COUNT=$(find data -type f -name "*.csv" | wc -l)
-          EMPTY_FILES=$(find data -type f -name "*.csv" -empty | wc -l)
-          NON_EMPTY_FILES=$((CSV_COUNT - EMPTY_FILES))
-
-          echo "Found $NON_EMPTY_FILES non-empty CSV files"
-
-          if [ $NON_EMPTY_FILES -lt 4 ]; then
-            echo "Error: Expected at least 4 non-empty CSV files but found $NON_EMPTY_FILES"
-            exit 1
-          fi
-
-      - name: Upload Fetched Data Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: sports-data
-          path: data/
-          overwrite: true
-          retention-days: 7
-
-      - name: Update Database
-        if: steps.fetch_data.outcome == 'success' && steps.validate_data.outcome == 'success'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          LOG_LEVEL: DEBUG
-          PYTHONPATH: "./"
-        run: poetry run python scripts/update_all_db.py
+        run: poetry run python scripts/update_all_usports_db.py
