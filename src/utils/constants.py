@@ -1,11 +1,12 @@
 """Contains import constant values needed for all leagues"""
 
-# Season options
-REGULAR = "regular"
-PLAYOFFS = "playoffs"
-CHAMPIONSHIP = "championship"
+BASKETBALL = "basketball"
+FOOTBALL = "football"
+ICE_HOCKEY = "ice_hockey"
+SOCCER = "soccer"
+VOLLEYBALL = "volleyball"
 
-VALID_SCHOOLS = [
+VALID_USPORTS_SCHOOLS = [
     "Acadia",
     "Alberta",
     "Algoma",
@@ -17,6 +18,7 @@ VALID_SCHOOLS = [
     "Carleton",
     "Concordia",
     "Dalhousie",
+    "ETS",
     "Guelph",
     "Lakehead",
     "Laurentian",
@@ -28,20 +30,25 @@ VALID_SCHOOLS = [
     "McGill",
     "McMaster",
     "Memorial",
+    "Moncton",
     "Montreal",
+    "Mount Allison",
     "Mount Royal",
     "Nipissing",
     "Ontario Tech",
     "Ottawa",
     "Queen's",
     "Regina",
+    "RMC",
     "Saint Mary's",
     "Saskatchewan",
-    "Sherbooke",
+    "Sherbrooke",
     "StFX",
+    "St. Thomas",
     "Thompson Rivers",
     "Toronto",
     "Toronto Metropolitan",
+    "Trent",
     "Trinity Western",
     "UBC",
     "UBC Okanagan",
@@ -50,6 +57,8 @@ VALID_SCHOOLS = [
     "UNBC",
     "UPEI",
     "UQAM",
+    "UQAC",
+    "UQTR",
     "Victoria",
     "Waterloo",
     "Western",
@@ -57,143 +66,3 @@ VALID_SCHOOLS = [
     "Winnipeg",
     "York",
 ]
-
-BASKETBALL_TEAM_COLUMNS = [
-    "team_name",
-    "points_per_game",
-    "games_played",
-    "total_points",
-    "total_wins",
-    "total_losses",
-    "win_percentage",
-    "total_points_against",
-    "field_goal_made",
-    "field_goal_attempted",
-    "field_goal_percentage",
-    "three_pointers_made",
-    "three_point_percentage",
-    "three_pointers_attempted",
-    "free_throws_made",
-    "free_throws_attempted",
-    "free_throw_percentage",
-    "offensive_rebounds_per_game",
-    "defensive_rebounds_per_game",
-    "total_rebounds_per_game",
-    "rebound_margin",
-    "assists_per_game",
-    "turnovers_per_game",
-    "steals_per_game",
-    "blocks_per_game",
-    "team_fouls_per_game",
-    "offensive_efficiency",
-    "defensive_efficiency",
-    "net_efficiency",
-    "field_goal_made_against",
-    "field_goal_attempted_against",
-    "field_goal_percentage_against",
-    "three_pointers_made_against",
-    "three_pointers_attempted_against",
-    "three_point_percentage_against",
-    "offensive_rebounds_per_game_against",
-    "defensive_rebounds_per_game_against",
-    "total_rebounds_per_game_against",
-    "rebound_margin_against",
-    "assists_per_game_against",
-    "turnovers_per_game_against",
-    "steals_per_game_against",
-    "blocks_per_game_against",
-    "team_fouls_per_game_against",
-    "points_per_game_against",
-    "net_efficiency_against",
-    "conference",
-]
-
-BASKETBALL_PLAYOFF_TEAM_COLUMNS = [
-    "team_name",
-    "points_per_game",
-    "games_played",
-    "field_goal_made",
-    "field_goal_attempted",
-    "field_goal_percentage",
-    "three_pointers_made",
-    "three_point_percentage",
-    "three_pointers_attempted",
-    "free_throws_made",
-    "free_throws_attempted",
-    "free_throw_percentage",
-    "offensive_rebounds_per_game",
-    "defensive_rebounds_per_game",
-    "total_rebounds_per_game",
-    "rebound_margin",
-    "assists_per_game",
-    "turnovers_per_game",
-    "steals_per_game",
-    "blocks_per_game",
-    "team_fouls_per_game",
-    "offensive_efficiency",
-    "defensive_efficiency",
-    "net_efficiency",
-    "field_goal_made_against",
-    "field_goal_attempted_against",
-    "field_goal_percentage_against",
-    "three_pointers_made_against",
-    "three_pointers_attempted_against",
-    "three_point_percentage_against",
-    "offensive_rebounds_per_game_against",
-    "defensive_rebounds_per_game_against",
-    "total_rebounds_per_game_against",
-    "rebound_margin_against",
-    "assists_per_game_against",
-    "turnovers_per_game_against",
-    "steals_per_game_against",
-    "blocks_per_game_against",
-    "team_fouls_per_game_against",
-    "points_per_game_against",
-    "net_efficiency_against",
-    "conference",
-]
-
-BASKETBALL_PLAYER_COLUMNS = [
-    "lastname_initials",
-    "first_name",
-    "school",
-    "games_played",
-    "games_started",
-    "minutes_played",
-    "field_goal_made",
-    "field_goal_attempted",
-    "field_goal_percentage",
-    "three_pointers_made",
-    "three_pointers_attempted",
-    "three_pointers_percentage",
-    "free_throws_made",
-    "free_throws_attempted",
-    "free_throws_percentage",
-    "total_points",
-    "offensive_rebounds",
-    "defensive_rebounds",
-    "total_rebounds",
-    "assists",
-    "turnovers",
-    "assist_to_turnover_ratio",
-    "steals",
-    "blocks",
-    "personal_fouls",
-    "disqualifications",
-]
-
-# Table names
-BASKETBALL_MEN_TEAM_REG = "basketball_men_team_regular"
-BASKETBALL_WOMEN_TEAM_REG = "basketball_women_team_regular"
-BASKETBALL_MEN_PLAYERS_REG = "basketball_men_players_regular"
-BASKETBALL_WOMEN_PLAYERS_REG = "basketball_women_players_regular"
-
-BASKETBALL_MEN_TEAM_PLAYOFFS = "basketball_men_team_playoffs"
-BASKETBALL_WOMEN_TEAM_PLAYOFFS = "basketball_women_team_playoffs"
-BASKETBALL_MEN_PLAYERS_PLAYOFFS = "basketball_men_players_playoffs"
-BASKETBALL_WOMEN_PLAYERS_PLAYOFFS = "basketball_women_players_playoffs"
-
-BASKETBALL_MEN_TEAM_CHAMPIONSHIP = "basketball_men_team_championship"
-BASKETBALL_WOMEN_TEAM_CHAMPIONSHIP = "basketball_women_team_championship"
-BASKETBALL_MEN_PLAYERS_CHAMPIONSHIP = "basketball_men_players_championship"
-BASKETBALL_WOMEN_PLAYERS_CHAMPIONSHIP = "basketball_women_players_championship"
