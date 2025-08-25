@@ -59,10 +59,10 @@ def update_all_databases():
                     except Exception:
                         session.rollback()
 
-        log.info("🎉 All active sports databases updated successfully!")
+        log.info("\n🎉 All active sports databases updated successfully!")
 
     except Exception as e:
-        log.error(f"💥 Database update failed: {e}")
+        log.error(f"\n💥 Database update failed: {e}")
         session.rollback()
         raise
     finally:
