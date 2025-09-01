@@ -15,10 +15,7 @@ logging.basicConfig(
     datefmt="%m/%d/%Y %I:%M:%S %p",
 )
 
-logger_blocklist = [
-    "hpack",
-    "httpcore",
-]
+logger_blocklist = ["hpack", "httpcore", "urllib3"]
 
 for module in logger_blocklist:
     logging.getLogger(module).setLevel(logging.WARNING)

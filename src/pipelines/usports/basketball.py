@@ -1,5 +1,6 @@
 from typing import Optional
 
+import logfire
 from pandas import DataFrame
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
@@ -25,6 +26,9 @@ class BasketballPipeline(BaseSportPipeline):
         standings_df = usports_bball_standings(league) if season_option == "regular" else None
         team_stats_df = usports_bball_teams(league, season_option)
         player_stats_df = usports_bball_players(league, season_option)
+        # drop rows of player df where first name is NaN
+        player_stats_df = player_stats_df.dropna(subset=["first_name"])
+
         return standings_df, team_stats_df, player_stats_df
 
     def validate_data(
@@ -58,33 +62,36 @@ class BasketballPipeline(BaseSportPipeline):
 
         # === Standings (only regular season) ===
         if standings_df is not None and season_option == "regular":
-            standings_df = self._add_metadata(standings_df, league)
-            session.query(BasketballStandings).filter_by(league=league).delete(synchronize_session=False)
+            with logfire.span("save_standings", league=league, records=len(standings_df)):
+                standings_df = self._add_metadata(standings_df, league)
+                session.query(BasketballStandings).filter_by(league=league).delete(synchronize_session=False)
 
-            records = standings_df.to_dict(orient="records")
-            stmt = insert(BasketballStandings).values(records)
-            session.execute(stmt)
+                records = standings_df.to_dict(orient="records")
+                stmt = insert(BasketballStandings).values(records)
+                session.execute(stmt)
 
         # === Team stats ===
         if team_stats_df is not None:
-            team_stats_df = self._add_metadata(team_stats_df, league, season_option)
-            session.query(BasketballTeamStats).filter_by(league=league, season_option=season_option).delete(
-                synchronize_session=False
-            )
+            with logfire.span("save_team_stats", league=league, season=season_option, records=len(team_stats_df)):
+                team_stats_df = self._add_metadata(team_stats_df, league, season_option)
+                session.query(BasketballTeamStats).filter_by(league=league, season_option=season_option).delete(
+                    synchronize_session=False
+                )
 
-            records = team_stats_df.to_dict(orient="records")
-            stmt = insert(BasketballTeamStats).values(records)
-            session.execute(stmt)
+                records = team_stats_df.to_dict(orient="records")
+                stmt = insert(BasketballTeamStats).values(records)
+                session.execute(stmt)
 
         # === Player stats ===
         if player_stats_df is not None:
-            player_stats_df = self._add_metadata(player_stats_df, league, season_option)
-            session.query(BasketballPlayerStats).filter_by(league=league, season_option=season_option).delete(
-                synchronize_session=False
-            )
+            with logfire.span("save_player_stats", league=league, season=season_option, records=len(player_stats_df)):
+                player_stats_df = self._add_metadata(player_stats_df, league, season_option)
+                session.query(BasketballPlayerStats).filter_by(league=league, season_option=season_option).delete(
+                    synchronize_session=False
+                )
 
-            records = player_stats_df.to_dict(orient="records")
-            stmt = insert(BasketballPlayerStats).values(records)
-            session.execute(stmt)
+                records = player_stats_df.to_dict(orient="records")
+                stmt = insert(BasketballPlayerStats).values(records)
+                session.execute(stmt)
 
         session.commit()

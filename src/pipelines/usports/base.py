@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+import logfire
 from pandas import DataFrame
 from sqlalchemy.orm import Session
 from usports.base.types import LeagueType, SeasonType
@@ -38,19 +39,32 @@ class BaseSportPipeline(ABC):
 
     def run_pipeline(self, session: Session, league: LeagueType, season_option: SeasonType):
         """Complete pipeline execution"""
-        try:
-            log.info(f"🔄 Running {self.sport_name} {league} {season_option} pipeline...")
-            # 1. Fetch data
-            standings_df, team_stats_df, player_stats_df = self.fetch_data(league, season_option)  # type: ignore
+        with logfire.span(f"{self.sport_name}_pipeline", league=league, season=season_option):
+            try:
+                log.info(f"\n🔄 Running {self.sport_name} {league} {season_option} pipeline...")
 
-            # 2. Validate data
-            self.validate_data(standings_df, team_stats_df, player_stats_df)
+                # 1. Fetch data
+                with logfire.span("fetch_data"):
+                    standings_df, team_stats_df, player_stats_df = self.fetch_data(league, season_option)  # type: ignore
+                    logfire.info(
+                        "Data fetched",
+                        teams=len(team_stats_df),
+                        players=len(player_stats_df),
+                        standings=len(standings_df) if standings_df is not None else 0,
+                    )
 
-            # 3. Save to database
-            self.save_to_database(session, standings_df, team_stats_df, player_stats_df, league, season_option)
+                # 2. Validate data
+                with logfire.span("validate_data"):
+                    self.validate_data(standings_df, team_stats_df, player_stats_df)
 
-            log.info(f"✅ {self.sport_name} {league} {season_option} pipeline completed successfully")
+                # 3. Save to database
+                with logfire.span("save_to_database"):
+                    self.save_to_database(session, standings_df, team_stats_df, player_stats_df, league, season_option)
 
-        except Exception as e:
-            log.error(f"❌ {self.sport_name} {league} {season_option} pipeline failed: {str(e)[:500]}...")
-            raise
+                log.info(f"✅ {self.sport_name} {league} {season_option} pipeline completed successfully\n")
+                logfire.info(f"{self.sport_name} pipeline completed", league=league, season=season_option)
+
+            except Exception as e:
+                log.error(f"❌ {self.sport_name} {league} {season_option} pipeline failed: {str(e)[:500]}...\n")
+                logfire.error(f"{self.sport_name} pipeline failed", league=league, season=season_option, error=str(e))
+                raise

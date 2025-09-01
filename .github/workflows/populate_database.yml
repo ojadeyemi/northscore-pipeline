@@ -32,6 +32,7 @@ jobs:
       - name: Run update script
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          LOGFIRE_TOKEN: ${{ secrets.LOGFIRE_TOKEN }}
           LOG_LEVEL: INFO
           PYTHONPATH: "./"
         run: poetry run python scripts/update_all_usports_db.py

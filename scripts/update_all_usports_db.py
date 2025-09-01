@@ -11,6 +11,7 @@ from src.pipelines.usports import (
     SoccerPipeline,
     VolleyballPipeline,
 )
+from src.pipelines.usports.base import BaseSportPipeline
 from src.utils.constants import (
     BASKETBALL,
     FOOTBALL,
@@ -34,7 +35,7 @@ def update_all_databases():
     active_seasons = get_active_seasons_by_month(current_month)
     log.debug(f"🗓️  Active seasons for month {current_month}: {active_seasons}")
 
-    SPORT_PIPELINES = {
+    SPORT_PIPELINES: dict[str, BaseSportPipeline] = {
         BASKETBALL: BasketballPipeline(),
         FOOTBALL: FootballPipeline(),
         ICE_HOCKEY: IceHockeyPipeline(),

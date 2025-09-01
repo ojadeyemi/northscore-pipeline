@@ -11,12 +11,13 @@ from src.pipelines.usports import (
     SoccerPipeline,
     VolleyballPipeline,
 )
+from src.pipelines.usports.base import BaseSportPipeline
 from src.utils.constants import BASKETBALL, FOOTBALL, ICE_HOCKEY, SOCCER, VOLLEYBALL
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-SPORT_PIPELINES = {
+SPORT_PIPELINES: dict[str, BaseSportPipeline] = {
     BASKETBALL: BasketballPipeline(),
     FOOTBALL: FootballPipeline(),
     ICE_HOCKEY: IceHockeyPipeline(),
@@ -32,12 +33,12 @@ def fetch_all_data():
     current_month_name = now.strftime("%B")
     active_seasons = get_active_seasons_by_month(current_month_num)
 
-    print(f"🗓️  Current month: {current_month_name}")
-    print(f"📊 Active seasons: {active_seasons}")
+    print(f"🗓️  Current month: {current_month_name}\n")
+    print(f"📊 Active seasons: {active_seasons}\n")
 
     for sport, season_options in active_seasons.items():
         if sport not in SPORT_PIPELINES:
-            print(f"⚠️  No pipeline for {sport}")
+            print(f"\n⚠️  No pipeline for {sport}")
             continue
 
         pipeline = SPORT_PIPELINES[sport]
@@ -61,7 +62,7 @@ def fetch_all_data():
                     print(f"✅ Saved {sport} {league} {season_option} to CSV")
 
                 except Exception as e:
-                    print(f"❌ Failed to fetch {sport} {league} {season_option}: {e}")
+                    print(f"❌ Failed to fetch {sport} {league} {season_option}: {e}\n")
 
 
 if __name__ == "__main__":
