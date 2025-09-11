@@ -39,12 +39,17 @@ class BaseSportPipeline(ABC):
 
     def run_pipeline(self, session: Session, league: LeagueType, season_option: SeasonType):
         """Complete pipeline execution"""
-        with logfire.span(f"{self.sport_name}_pipeline", league=league, season=season_option):
+        with logfire.span(f"{self.sport_name} pipeline"):
             try:
                 log.info(f"\n🔄 Running {self.sport_name} {league} {season_option} pipeline...")
 
                 # 1. Fetch data
-                with logfire.span("fetch_data"):
+                with logfire.span(
+                    "fetch_data for {sport} {league} {season}",
+                    sport=self.sport_name,
+                    league=league,
+                    season=season_option,
+                ):
                     standings_df, team_stats_df, player_stats_df = self.fetch_data(league, season_option)  # type: ignore
                     logfire.info(
                         "Data fetched",
@@ -54,11 +59,21 @@ class BaseSportPipeline(ABC):
                     )
 
                 # 2. Validate data
-                with logfire.span("validate_data"):
+                with logfire.span(
+                    "validate_data for {sport} {league} {season}",
+                    sport=self.sport_name,
+                    league=league,
+                    season=season_option,
+                ):
                     self.validate_data(standings_df, team_stats_df, player_stats_df)
 
                 # 3. Save to database
-                with logfire.span("save_to_database"):
+                with logfire.span(
+                    "save_to_database for {sport} {league} {season}",
+                    sport=self.sport_name,
+                    league=league,
+                    season=season_option,
+                ):
                     self.save_to_database(session, standings_df, team_stats_df, player_stats_df, league, season_option)
 
                 log.info(f"✅ {self.sport_name} {league} {season_option} pipeline completed successfully\n")

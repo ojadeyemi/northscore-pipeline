@@ -7,65 +7,65 @@ from usports.base.constants import (
 )
 from usports.base.types import SeasonType
 
+# Season type constants
+REGULAR = "regular"
+PLAYOFFS = "playoffs"
+CHAMPIONSHIP = "championship"
+
 
 def get_active_seasons_by_month(month: int) -> dict[str, list[SeasonType]]:
-    """Determine what data to fetch based on current month"""
+    """Get active sports seasons for a given month"""
 
-    # Fall sports: football, soccer (Sept-Dec)
-    # Winter sports: basketball, ice_hockey, volleyball (Jan-Mar)
-
-    if month == 9:  # September: Fall sports regular season only
+    # October - Fall sports regular season
+    if month == 10:
         return {
-            FOOTBALL: ["regular"],
-            SOCCER: ["regular"],
+            FOOTBALL: [REGULAR],
+            SOCCER: [REGULAR],
         }
 
-    if month == 10:  # October: All sports regular season
+    # November - Fall playoffs begin, winter sports start
+    if month == 11:
         return {
-            FOOTBALL: ["regular"],
-            SOCCER: ["regular"],
-            BASKETBALL: ["regular"],
-            ICE_HOCKEY: ["regular"],
-            VOLLEYBALL: ["regular"],
+            FOOTBALL: [REGULAR, PLAYOFFS],
+            SOCCER: [REGULAR, PLAYOFFS],
+            BASKETBALL: [REGULAR],
+            ICE_HOCKEY: [REGULAR],
+            VOLLEYBALL: [REGULAR],
         }
 
-    if month == 11:  # November: Fall playoffs start, winter regular season starts
+    # December - Fall championships, winter continues
+    if month == 12:
         return {
-            FOOTBALL: ["regular", "playoffs", "championship"],
-            SOCCER: ["regular", "playoffs", "championship"],
-            BASKETBALL: ["regular"],
-            ICE_HOCKEY: ["regular"],
-            VOLLEYBALL: ["regular"],
+            FOOTBALL: [PLAYOFFS, CHAMPIONSHIP],
+            SOCCER: [PLAYOFFS, CHAMPIONSHIP],
+            BASKETBALL: [REGULAR],
+            ICE_HOCKEY: [REGULAR],
+            VOLLEYBALL: [REGULAR],
         }
 
-    if month == 12:  # December: Fall championships, winter regular season continues
+    # January - Winter sports only
+    if month == 1:
         return {
-            FOOTBALL: ["regular", "playoffs", "championship"],
-            SOCCER: ["regular", "playoffs", "championship"],
-            BASKETBALL: ["regular"],
-            ICE_HOCKEY: ["regular"],
-            VOLLEYBALL: ["regular"],
+            BASKETBALL: [REGULAR],
+            ICE_HOCKEY: [REGULAR],
+            VOLLEYBALL: [REGULAR],
         }
 
-    if month == 1:  # January: Winter regular season
+    # February - Winter playoffs begin
+    if month == 2:
         return {
-            BASKETBALL: ["regular"],
-            ICE_HOCKEY: ["regular"],
-            VOLLEYBALL: ["regular"],
+            BASKETBALL: [REGULAR, PLAYOFFS],
+            ICE_HOCKEY: [REGULAR, PLAYOFFS],
+            VOLLEYBALL: [REGULAR, PLAYOFFS],
         }
 
-    if month == 2:  # February: Winter playoffs
+    # March - Winter championships
+    if month == 3:
         return {
-            BASKETBALL: ["regular", "playoffs"],
-            ICE_HOCKEY: ["regular", "playoffs"],
-            VOLLEYBALL: ["regular", "playoffs"],
+            BASKETBALL: [PLAYOFFS, CHAMPIONSHIP],
+            ICE_HOCKEY: [PLAYOFFS, CHAMPIONSHIP],
+            VOLLEYBALL: [PLAYOFFS, CHAMPIONSHIP],
         }
 
-    if month == 3:  # March: Winter championships
-        return {
-            BASKETBALL: ["regular", "playoffs", "championship"],
-            ICE_HOCKEY: ["regular", "playoffs", "championship"],
-            VOLLEYBALL: ["regular", "playoffs", "championship"],
-        }
-
+    # No active seasons for other months
     return {}

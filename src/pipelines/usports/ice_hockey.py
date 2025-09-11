@@ -5,6 +5,7 @@ from usports.base.types import LeagueType, SeasonType
 from usports.ice_hockey import usports_ice_hockey_players, usports_ice_hockey_standings, usports_ice_hockey_teams
 
 from src.database.models.usports.ice_hockey import IceHockeyPlayerStats, IceHockeyStandings, IceHockeyTeamStats
+from src.pipelines.seasonal_logic import REGULAR
 from src.pipelines.usports.base import BaseSportPipeline
 from src.validations.usports.ice_hockey import validate_ice_hockey_data
 
@@ -16,7 +17,7 @@ class IceHockeyPipeline(BaseSportPipeline):
     def fetch_data(self, league: LeagueType, season_option: SeasonType):
         """Fetch ice hockey data from USports package"""
         standings_df = None
-        if season_option == "regular":
+        if season_option == REGULAR:
             standings_df = usports_ice_hockey_standings(league)
 
         team_stats_df = usports_ice_hockey_teams(league, season_option)
@@ -42,8 +43,10 @@ class IceHockeyPipeline(BaseSportPipeline):
         """Save ice hockey data to unified tables"""
 
         # Save standings (regular season only)
-        if standings_df is not None and season_option == "regular":
-            with logfire.span("save_standings", league=league, records=len(standings_df)):
+        if standings_df is not None and season_option == REGULAR:
+            with logfire.span(
+                "save_standings for {league} with {records} records", league=league, records=len(standings_df)
+            ):
                 session.query(IceHockeyStandings).filter_by(league=league).delete()
 
                 standings_df = standings_df.copy()
@@ -55,7 +58,12 @@ class IceHockeyPipeline(BaseSportPipeline):
 
         # Save team stats
         if team_stats_df is not None and not team_stats_df.empty:
-            with logfire.span("save_team_stats", league=league, season=season_option, records=len(team_stats_df)):
+            with logfire.span(
+                "save_team_stats for {league} {season} with {records} records",
+                league=league,
+                season=season_option,
+                records=len(team_stats_df),
+            ):
                 session.query(IceHockeyTeamStats).filter_by(league=league, season_option=season_option).delete()
 
                 team_stats_df = team_stats_df.copy()
@@ -68,7 +76,12 @@ class IceHockeyPipeline(BaseSportPipeline):
 
         # Save player stats
         if player_stats_df is not None and not player_stats_df.empty:
-            with logfire.span("save_player_stats", league=league, season=season_option, records=len(player_stats_df)):
+            with logfire.span(
+                "save_player_stats for {league} {season} with {records} records",
+                league=league,
+                season=season_option,
+                records=len(player_stats_df),
+            ):
                 session.query(IceHockeyPlayerStats).filter_by(league=league, season_option=season_option).delete()
 
                 player_stats_df = player_stats_df.copy()
