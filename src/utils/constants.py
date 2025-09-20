@@ -51,6 +51,7 @@ VALID_USPORTS_SCHOOLS = [
     "Trent",
     "Trinity Western",
     "UBC",
+    "UBCO",
     "UBC Okanagan",
     "UFV",
     "UNB",
