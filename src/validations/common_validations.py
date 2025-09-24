@@ -1,12 +1,12 @@
 import pandas as pd
 
-from src.utils.constants import VALID_SCHOOLS
+from src.utils.constants import VALID_USPORTS_SCHOOLS
 from src.utils.logger import log
 
 
 def validate_school_column(df: pd.DataFrame, school_column: str):
     """Validate U Sports school names"""
-    invalid = df[~df[school_column].isin(VALID_SCHOOLS)]
+    invalid = df[~df[school_column].isin(VALID_USPORTS_SCHOOLS)]
 
     if not invalid.empty:
         bad_values = invalid[school_column].unique()
@@ -20,7 +20,7 @@ def validate_columns(df: pd.DataFrame, expected_cols: list[str], df_name: str):
     missing = expected - actual
 
     if missing:
-        raise ValueError(f"{df_name} is missing columnsL {missing}")
+        raise ValueError(f"{df_name} is missing columns: {missing}")
     extra = actual - expected
     if extra:
         log.warning(f"{df_name} has extra columns: {extra}")
