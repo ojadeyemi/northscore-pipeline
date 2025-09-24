@@ -2,7 +2,7 @@ name: Populate Database
 
 on:
   schedule:
-    - cron: "0 3 * 10,11,12,1,2 *" # Daily at 2 AM from November to February
+    - cron: "0 6,18,23 * 10,11,12,1,2,3 *" # Daily at 6am, 6pm, 11pm UTC from Oct to Mar
 
   workflow_dispatch: # Allows manual runs
 
