@@ -415,14 +415,14 @@ plugins = ["setuptools"]
 
 [[package]]
 name = "logfire"
-version = "4.9.0"
+version = "4.10.0"
 description = "The best Python observability tool! 🪵🔥"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "logfire-4.9.0-py3-none-any.whl", hash = "sha256:0cc04b6c021f5b709f27d10483f32e6c424a18fb6af4b15948c1da087d836441"},
-    {file = "logfire-4.9.0.tar.gz", hash = "sha256:0be53fb19a439a0719c2754a71c37a522c4501ade860395bd3cb073ab29fa0d8"},
+    {file = "logfire-4.10.0-py3-none-any.whl", hash = "sha256:54514b6253eea4c4e28f587b55508cdacbc75a423670bb5147fc2af70c16f5d3"},
+    {file = "logfire-4.10.0.tar.gz", hash = "sha256:5c1021dac8258d78d5fd08a336a22027df432c42ba70e96eef6cac7d8476a67c"},
 ]
 
 [package.dependencies]
